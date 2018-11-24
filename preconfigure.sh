@@ -50,6 +50,11 @@ cat <<HERE >/usr/share/nginx/html/index.html
     })
       .addTo(map);
 
+    L.tileLayer('${TILESERVER2}', {
+      attribution: '${ATTRIBUTION2}'
+    })
+      .addTo(map);
+
   </script>
 </body>
 </html>
