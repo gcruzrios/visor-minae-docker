@@ -15,12 +15,14 @@
 
 <body>
     <div id="map"></div>
-    <link rel="stylesheet" href="../L.Control.Layers.Tree.css" crossorigin=""/>
-    <script src="../L.Control.Layers.Tree.js"></script>
+    <link rel="stylesheet" href="dist/L.Control.Layers.Tree.css" crossorigin=""/>
+    <script src="dist/L.Control.Layers.Tree.js"></script>
 
     <script type="text/javascript">
         var center = [40, 0];
 
+        // Mapas Base 
+        
         var osm = L.tileLayer(
             '//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
             {attribution: '© OpenStreetMap contributors'}
@@ -47,11 +49,7 @@
             thunderAttr
         );
 
-        var map = L.map('map', {
-            layers: [osm],
-            center: center,
-            zoom: 5
-        });
+        
 
         var baseTree = [
             {
@@ -70,6 +68,12 @@
                 ]
             },
         ];
+
+        var map = L.map('map', {
+            layers: [osm],
+            center: center,
+            zoom: 5
+        });
 
         var granada = L.marker([37.133, -3.636]);
         var malaga = L.marker([36.674, -4.499]);

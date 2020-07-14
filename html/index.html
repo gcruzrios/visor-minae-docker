@@ -7,6 +7,47 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" crossorigin=""/>
     <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet-src.js" crossorigin=""></script>
 
+    <script src="src/Leaflet.draw.js"></script>
+    <script src="src/Leaflet.Draw.Event.js"></script>
+    <link rel="stylesheet" href="src/leaflet.draw.css"/>
+
+    <script src="src/Toolbar.js"></script>
+    <script src="src/Tooltip.js"></script>
+
+    <script src="src/ext/GeometryUtil.js"></script>
+    <script src="src/ext/LatLngUtil.js"></script>
+    <script src="src/ext/LineUtil.Intersect.js"></script>
+    <script src="src/ext/Polygon.Intersect.js"></script>
+    <script src="src/ext/Polyline.Intersect.js"></script>
+    <script src="src/ext/TouchEvents.js"></script>
+
+    <script src="src/draw/DrawToolbar.js"></script>
+    <script src="src/draw/handler/Draw.Feature.js"></script>
+    <script src="src/draw/handler/Draw.SimpleShape.js"></script>
+    <script src="src/draw/handler/Draw.Polyline.js"></script>
+    <script src="src/draw/handler/Draw.Marker.js"></script>
+    <script src="src/draw/handler/Draw.Circle.js"></script>
+    <script src="src/draw/handler/Draw.CircleMarker.js"></script>
+    <script src="src/draw/handler/Draw.Polygon.js"></script>
+    <script src="src/draw/handler/Draw.Rectangle.js"></script>
+
+
+    <script src="src/edit/EditToolbar.js"></script>
+    <script src="src/edit/handler/EditToolbar.Edit.js"></script>
+    <script src="src/edit/handler/EditToolbar.Delete.js"></script>
+
+    <script src="src/Control.Draw.js"></script>
+
+    <script src="src/edit/handler/Edit.Poly.js"></script>
+    <script src="src/edit/handler/Edit.SimpleShape.js"></script>
+    <script src="src/edit/handler/Edit.Rectangle.js"></script>
+    <script src="src/edit/handler/Edit.Marker.js"></script>
+    <script src="src/edit/handler/Edit.CircleMarker.js"></script>
+    <script src="src/edit/handler/Edit.Circle.js"></script>
+
+
+
+
     <style type="text/css">
         html { 
             width: 100%;
@@ -122,16 +163,18 @@
     
     
     </div>
+   
     <div id="map"></div>
+
+
     <link rel="stylesheet" href="dist/L.Control.Layers.Tree.css" crossorigin=""/>
     <script src="dist/L.Control.Layers.Tree.js"></script>
 
     <script type="text/javascript">
         var center = [9.5, -84];
 
-       
-        
-        // Define some base layers
+        // Definiendo las Capas Base de los Mapas
+
         var osm = L.tileLayer(
             '//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
             {attribution: '© OpenStreetMap contributors'}
@@ -179,7 +222,7 @@
         // The tree containing the layers
         var baseTree = [
             {
-                label: 'Base Maps',
+                label: 'Base Maps',collapsed: true,
                 children: [
                     {label: 'OSM', layer: osm, name: 'OpenStreeMap'},
                     {label: 'B&W', layer: osmBw, name: 'OpenStreeMap <b>B&W</b>'},
@@ -191,7 +234,7 @@
                 ]
             },
             {
-                label: 'Thunder',
+                label: 'Thunder',collapsed: true,
                 children: [
                     {label: 'Cycle', layer: cycle},
                     {label: 'Transport', layer: transport},
@@ -216,33 +259,96 @@
             zoom: 8
         });
 
-        L.control.layers.tree(baseTree).addTo(map);
+        //L.control.layers.tree(baseTree).addTo(map);
+ 
+        var granada = L.marker([37.133, -3.636]);
+        var malaga = L.marker([36.674, -4.499]);
+        var sevilla = L.marker([37.418, -5.893]);
 
+        var overlaysTree = {
+            label: 'Algunas ciudades',
+            //selectAllCheckbox: 'Un/select all',
+            children: [
+                {label: '<div id="onlysel">-Mostrar solo selecionadas-</div>'},
+                {label: 'France', collapsed: true, children: [
+                    {label: 'Lyon', layer: L.marker([45.728, 4.945])},
+                    {label: 'Paris', layer: L.marker([48.725, 2.359])},
+                    {label: 'Toulouse', layer: L.marker([43.629, 1.364])},
+                ]},
+                {label: 'Germany', collapsed: true, children: [
+                    {label: 'Berlin', layer: L.marker([52.559, 13.287])},
+                    {label: 'Cologne', layer: L.marker([50.866, 7.143])},
+                    {label: 'Hamburg', layer: L.marker([53.630, 9.988])},
+                    {label: 'Munich', layer: L.marker([48.354, 11.786])},
+                ]},
+                {label: 'Spain', collapsed: true, children: [
+                    {label: 'Madrid', layer: L.marker([40.472, -3.561])},
+                    {label: 'Granada', layer: granada},
+                    {label: 'Málaga', layer: malaga},
+                    {label: 'Sevilla', layer: sevilla},
+                    {label: 'Barcelona', layer: L.marker([41.297, 2.078])},
+                    {label: 'Gerona', layer: L.marker([41.901, 2.760])},
+                    
+                ]},
+                    
+            ]
+        }
+        L.control.layers.tree(baseTree,overlaysTree).addTo(map);
+
+       
 
         //boton RUN button-play
 
-
-        window.addEventListener("map:init", function (event) {
-
-        var map = event.detail.map;
-
         var button  = document.getElementById("button-play");
         button.addEventListener('click', run)
-        console.log("Se hizo click en button play");
+        //console.log("Se hizo click en button play");
 
         function run(){
+            var zoom = 12;
             var lat = document.getElementById("lat").value;
             var lng = document.getElementById("lng").value;
 
-            console.log("lat",lat);
-            console.log("lng",lng);
-            
-            map.panTo(new L.LatLng(lat, lng));
+            var marker = L.marker([lat, lng],{}).addTo(map);
+            map.flyTo([lat, lng], zoom);
         }
 
+        
+        
+        var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+            osmAttrib = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+            osm = L.tileLayer(osmUrl, { maxZoom: 18, attribution: osmAttrib }),
+            
+            //map = new L.Map('map', { center: new L.LatLng(51.505, -0.04), zoom: 13 }),
+            
+            drawnItems = L.featureGroup().addTo(map);
+            L.control.layers({
+            // 'osm': osm.addTo(map),
+            //"google": L.tileLayer('http://www.google.cn/maps/vt?lyrs=s@189&gl=cn&x={x}&y={y}&z={z}', {
+            // attribution: 'google'
+            //})
+           }, { 'drawlayer': drawnItems }, { position: 'topleft', collapsed: false }).addTo(map);
+        
+        map.addControl(new L.Control.Draw({
+        edit: {
+            featureGroup: drawnItems,
+            poly: {
+                allowIntersection: false
+            }
+        },
+        draw: {
+            polygon: {
+                allowIntersection: false,
+                showArea: true
+            }
+        }
+    }));
 
-        map.addControl(searchControl);
-        });
+    map.on(L.Draw.Event.CREATED, function (event) {
+        var layer = event.layer;
+
+        drawnItems.addLayer(layer);
+    });
+        
 
     </script>
 </body>
