@@ -1,0 +1,9 @@
+version: '3'
+services:
+  web:
+    container_name: visor-minae
+    ports:
+      - "80:80"
+    volumes:
+      - "~/docker/visor-minae-docker/html:/usr/share/nginx/html"
+    image: visor-minae

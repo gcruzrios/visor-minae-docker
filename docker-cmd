@@ -1,0 +1,1 @@
+docker run -d -v ~/docker/visor-minae-docker/html:/usr/share/nginx/html -p 80:80 visor-minae

@@ -1,0 +1,358 @@
+<html>
+<head> 
+	<meta charset="UTF-8">
+	<title>WMS Leaflet</title>
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css" />
+	<style> 
+ 
+ 	 body {
+            padding: 0;
+            margin: 0;
+        }
+        html, body, #map {
+            height: 100%;
+            width: 100%;
+        }
+		
+	.leaflet-popup-content-wrapper {
+    width: 420px;
+	height: 400px;
+	}
+	
+	iframe {
+	width: 400px;
+	height: 350px;
+	}
+
+    #map {
+			width: 100%;
+			height: 100%; 
+			 box-shadow: 5px 5px 5px #888;
+			}
+ 	</style> 
+</head>  
+	<body>
+        
+ 
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet-src.js" crossorigin=""></script>
+
+    <link rel="stylesheet" href="dist/L.Control.Layers.Tree.css" crossorigin=""/>
+    <script src="dist/L.Control.Layers.Tree.js"></script>
+
+	<div id ="map"> </div> 
+	<script>
+
+
+
+    var center = [9.5, -84];
+ 
+        var osm = L.tileLayer(
+            '//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+            {attribution: '© OpenStreetMap contributors'}
+        );
+
+        var osmBw = L.tileLayer(
+            'http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png',
+            {attribution: '© OpenStreetMap contributors'}
+        );
+
+        var otopomap = L.tileLayer(
+            '//{s}.tile.opentopomap.org/{z}/{x}/{y}.png',
+            {attribution: '© OpenStreetMap contributors. OpenTopoMap.org'}
+        );
+
+        var googleMap = L.tileLayer(
+            'https://mt1.google.com/vt/lyrs=r&x={x}&y={y}&z={z}',
+            {attribution: '© GoogleMaps contributors'}
+        );
+
+        var googleMapSatellite = L.tileLayer(
+            'https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',
+            {attribution: '© GoogleMaps contributors'}
+        );
+
+        var googleMapHybrid = L.tileLayer(
+            'https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}',
+            {attribution: '© GoogleMaps contributors'}
+        ); 
+
+
+        var thunderAttr = {attribution: '© OpenStreetMap contributors. Tiles courtesy of Andy Allan'}
+        var transport = L.tileLayer(
+            '//{s}.tile.thunderforest.com/transport/{z}/{x}/{y}.png',
+            thunderAttr
+        );
+
+        var cycle = L.tileLayer(
+            '//{s}.tile.thunderforest.com/cycle/{z}/{x}/{y}.png',
+            thunderAttr
+        );
+
+        // The tree containing the layers
+        var baseTree = [
+            {
+                label: 'Base Maps',collapsed: true,
+                children: [
+                    {label: 'OSM', layer: osm, name: 'OpenStreeMap'},
+                    {label: 'B&W', layer: osmBw, name: 'OpenStreeMap <b>B&W</b>'},
+                    {label: 'OpenTopoMap', layer: otopomap, name: 'Topographic - OSM'},
+                    {label: 'GoogleMaps', layer: googleMap, name: 'Google Maps'},
+                    {label: 'GoogleMapsSatellite', layer: googleMapSatellite, name: 'Google Maps Satellite'},
+                    {label: 'GoogleMaps Hybrid', layer: googleMapHybrid, name: 'Google Maps Hybrid'},
+
+                ]
+            },
+            {
+                label: 'Thunder',collapsed: true,
+                children: [
+                    {label: 'Cycle', layer: cycle},
+                    {label: 'Transport', layer: transport},
+                ]
+            },
+        ];
+
+		//var map = L.map('map').setView(center, 8);
+        var map = L.map('map', {
+            layers: [osm],
+            center: center,
+            zoom: 8
+        });
+
+        /****************************
+          SECCION DE WMS SNIT
+        ****************************/
+
+	//var map = L.map('map').setView( center, 8);
+		
+	var limite_cantonal_1_5_mil = L.layerGroup();
+        L.tileLayer.wms('http://geos.snitcr.go.cr/be/IGN_5/wms?', {
+            layers: 'limitecantonal_5k',
+            format: 'image/png',
+            transparent: true
+        }).addTo(limite_cantonal_1_5_mil);
+
+        var limite_distrital_1_5_mil = L.layerGroup();
+        L.tileLayer.wms('http://geos.snitcr.go.cr/be/IGN_5/wms?', {
+            layers: 'limitedistrital_5k',
+            format: 'image/png',
+            transparent: true
+        }).addTo(limite_distrital_1_5_mil);
+
+        var limite_provincial_1_5_mil = L.layerGroup();
+        L.tileLayer.wms('http://geos.snitcr.go.cr/be/IGN_5/wms?', {
+            layers: 'limiteprovincial_5k',
+            format: 'image/png',
+            transparent: true
+        }).addTo(limite_provincial_1_5_mil);
+
+        var linea_costa_1_5_mil = L.layerGroup();
+        L.tileLayer.wms('http://geos.snitcr.go.cr/be/IGN_5/wms?', {
+            layers: 'linea_costa_5000',
+            format: 'image/png',
+            transparent: true
+        }).addTo(linea_costa_1_5_mil);
+
+        var urbano_1_5_mil = L.layerGroup();
+        L.tileLayer.wms('http://geos.snitcr.go.cr/be/IGN_5/wms?', {
+            layers: 'urbano_5000',
+            format: 'image/png',
+            transparent: true
+        }).addTo(urbano_1_5_mil);
+
+        var vias_1_5_mil = L.layerGroup();
+        L.tileLayer.wms('http://geos.snitcr.go.cr/be/IGN_5/wms?', {
+            layers: 'vias_5000',
+            format: 'image/png',
+            transparent: true
+        }).addTo(vias_1_5_mil);
+
+        // Fin de capas SNIT
+
+        //Capas de Sinac
+
+        var Areas_Silvestres_Protegidas_2020 = L.layerGroup();
+        L.tileLayer.wms('http://geos1pne.sirefor.go.cr/GeoserviciosPNE/wms?', {
+            layers: 'areas_silvestres_protegidas',
+            format: 'image/png',
+            transparent: true
+        }).addTo(Areas_Silvestres_Protegidas_2020);
+
+        var Areas_Conservacion_2020 = L.layerGroup();
+        L.tileLayer.wms('http://geos1pne.sirefor.go.cr/GeoserviciosPNE/wms?', {
+            layers: 'areas_conservacion',
+            format: 'image/png',
+            transparent: true
+        }).addTo(Areas_Conservacion_2020);
+
+        var Registro_Nacional_Humedales_2020 = L.layerGroup();
+        L.tileLayer.wms('http://geos1pne.sirefor.go.cr/GeoserviciosPNE/wms?', {
+            layers: 'registro_nacional_humedales',
+            format: 'image/png',
+            transparent: true
+        }).addTo(Registro_Nacional_Humedales_2020);
+
+        var Bosque_Palmas_2020 = L.layerGroup();
+        L.tileLayer.wms('http://geos1pne.sirefor.go.cr/GeoserviciosPNE/wms?', {
+            layers: 'bosque_palmas',
+            format: 'image/png',
+            transparent: true
+        }).addTo(Bosque_Palmas_2020);
+
+        var Bosque_Decidio_2020 = L.layerGroup();
+        L.tileLayer.wms('http://geos1pne.sirefor.go.cr/GeoserviciosPNE/wms?', {
+            layers: 'bosque_decidio',
+            format: 'image/png',
+            transparent: true
+        }).addTo(Bosque_Decidio_2020);
+
+        var Bosque_Maduro_2020 = L.layerGroup();
+        L.tileLayer.wms('http://geos1pne.sirefor.go.cr/GeoserviciosPNE/wms?', {
+            layers: 'bosque_maduro',
+            format: 'image/png',
+            transparent: true
+        }).addTo(Bosque_Maduro_2020);
+
+        var Bosque_Secundario_2020 = L.layerGroup();
+        L.tileLayer.wms('http://geos1pne.sirefor.go.cr/GeoserviciosPNE/wms?', {
+            layers: 'bosque_secundario',
+            format: 'image/png',
+            transparent: true
+        }).addTo(Bosque_Secundario_2020);
+
+        //Fin de Capas De Sinac
+
+        // Capas Fonafifo
+
+        var AREAS_PROTEGIDAS_2020 = L.layerGroup();
+        L.tileLayer.wms('http://geopsa.fonafifo.com/geoserver/GeoServer/wms?', {
+            layers: 'SVGEO_AREAS_PROTEGIDAS_V',
+            format: 'image/png',
+            transparent: true
+        }).addTo(AREAS_PROTEGIDAS_2020);
+
+        var CORREDORES_BIOLOGICOS_2020 = L.layerGroup();
+        L.tileLayer.wms('http://geopsa.fonafifo.com/geoserver/GeoServer/wms?', {
+            layers: 'SVGEO_CORREDORES_BIOLOGICOS_V',
+            format: 'image/png',
+            transparent: true
+        }).addTo(CORREDORES_BIOLOGICOS_2020);
+
+        var RECURSO_HIDRICO_2020 = L.layerGroup();
+        L.tileLayer.wms('http://geopsa.fonafifo.com/geoserver/GeoServer/wms?', {
+            layers: 'SVGEO_RECURSO_HIDRICO_V',
+            format: 'image/png',
+            transparent: true
+        }).addTo(RECURSO_HIDRICO_2020);
+
+        var TERRITORIOS_INDIGENAS_2020 = L.layerGroup();
+        L.tileLayer.wms('http://geopsa.fonafifo.com/geoserver/GeoServer/wms?', {
+            layers: 'SVGEO_TERRITORIOS_INDIGENAS_V',
+            format: 'image/png',
+            transparent: true
+        }).addTo(TERRITORIOS_INDIGENAS_2020);
+
+        var VACIOS_CONSERVACION_2020 = L.layerGroup();
+        L.tileLayer.wms('http://geopsa.fonafifo.com/geoserver/GeoServer/wms?', {
+            layers: 'SVGEO_VACIOS_CONSERVACION_V',
+            format: 'image/png',
+            transparent: true
+        }).addTo(VACIOS_CONSERVACION_2020);
+
+        var INDICE_DESARROLLO_2020 = L.layerGroup();
+        L.tileLayer.wms('http://geopsa.fonafifo.com/geoserver/GeoServer/wms?', {
+            layers: 'SVGEO_INDICE_DESARROLLO_V',
+            format: 'image/png',
+            transparent: true
+        }).addTo(INDICE_DESARROLLO_2020);
+
+        var CENTROIDES_CONTRATOS_2020 = L.layerGroup();
+        L.tileLayer.wms('http://geopsa.fonafifo.com/geoserver/GeoServer/wms?', {
+            layers: 'SVGEO_CENTROIDES_CONTRATOS_V',
+            format: 'image/png',
+            transparent: true
+        }).addTo(CENTROIDES_CONTRATOS_2020);
+
+        var CENTROIDES_FINCAS_2020 = L.layerGroup();
+        L.tileLayer.wms('http://geopsa.fonafifo.com/geoserver/GeoServer/wms?', {
+            layers: 'SVGEO_CENTROIDES_FINCAS_V',
+            format: 'image/png',
+            transparent: true
+        }).addTo(CENTROIDES_FINCAS_2020);
+
+        var POLIGONOS_FINCAS_2020 = L.layerGroup();
+        L.tileLayer.wms('http://geopsa.fonafifo.com/geoserver/GeoServer/wms?', {
+            layers: 'SVGEO_POLIGONOS_FINCAS_V',
+            format: 'image/png',
+            transparent: true
+        }).addTo(POLIGONOS_FINCAS_2020);
+
+        
+
+
+        //Fin de Capas De Fonafifo
+
+
+        var overlaysTree = {
+            label: 'Capas de geoservicios',
+            //selectAllCheckbox: 'Un/select all',
+            children: [
+                {label: '<div id="onlysel">-Mostrar solo selecionadas-</div>'},
+                {label: 'SNIT', collapsed: true, children: [
+                    {label: 'limite_cantonal_1_5_mil', layer: limite_cantonal_1_5_mil},
+                    {label: 'limite_distrital_1_5_mil', layer: limite_distrital_1_5_mil},
+                    {label: 'limite_provincial_1_5_mil', layer: limite_provincial_1_5_mil},
+                    {label: 'linea_costa_1_5_mil', layer: linea_costa_1_5_mil},
+                    {label: 'urbano_1_5_mil', layer: urbano_1_5_mil},
+                    {label: 'vias_1_5_mil', layer: vias_1_5_mil},
+                ]},
+                
+                {label: 'SINAC Areas Protegidas', collapsed: true, children: [
+                    {label: 'Areas Silvestres Protegidas', layer: Areas_Silvestres_Protegidas_2020},
+                    {label: 'Areas de Conservación', layer: Areas_Conservacion_2020},
+                    {label: 'Registro_Nacional_Humedales_2020', layer: Registro_Nacional_Humedales_2020},
+
+                    {label: 'Bosque_Palmas_2020', layer: Bosque_Palmas_2020},
+                    {label: 'Bosque_Decidio_2020', layer: Bosque_Decidio_2020},
+                    {label: 'Bosque_Maduro_2020', layer: Bosque_Maduro_2020},
+                    {label: 'Bosque_Secundario_2020', layer: Bosque_Secundario_2020},
+                    
+                ]},
+                
+                {label: 'FONAFIFO PSA', collapsed: true, children: [
+                
+                    {label: 'AREAS_PROTEGIDAS_2020', layer: AREAS_PROTEGIDAS_2020},
+                    {label: 'CORREDORES_BIOLOGICOS_2020', layer: CORREDORES_BIOLOGICOS_2020},
+                    {label: 'RECURSO_HIDRICO_2020', layer: RECURSO_HIDRICO_2020},
+                
+                    {label: 'TERRITORIOS_INDIGENAS_2020', layer: TERRITORIOS_INDIGENAS_2020},
+                    {label: 'VACIOS_CONSERVACION_2020', layer: VACIOS_CONSERVACION_2020},
+                    {label: 'INDICE_DESARROLLO_2020', layer: INDICE_DESARROLLO_2020},
+                    {label: 'CENTROIDES_CONTRATOS_2020', layer: CENTROIDES_CONTRATOS_2020},
+                    {label: 'CENTROIDES_FINCAS_2020', layer: CENTROIDES_FINCAS_2020},
+                    {label: 'POLIGONOS_FINCAS_2020', layer: POLIGONOS_FINCAS_2020},
+                   
+                ]},
+                /*
+                {label: 'IMN Costa Rica', collapsed: true, children: [
+                    {label: 'Evapotranspiracion_Media_Anual_Costa_Rica_2004', layer: Evapotranspiracion_Media_Anual_Costa_Rica_2004},
+                    {label: 'Tem_max_CR_60_13', layer: Tem_max_CR_60_13},
+                    {label: 'Tem_media_CR_60_13', layer: Tem_media_CR_60_13},
+                    {label: 'Temperatura_Maxima_Costa_Rica_2004', layer: Temperatura_Maxima_Costa_Rica_2004},
+                    {label: 'Temperatura_Minima_Costa_Rica_2004', layer: Temperatura_Minima_Costa_Rica_2004},
+                    {label: 'Temperatura_media_Costa_Rica_2004', layer: Temperatura_media_Costa_Rica_2004},
+                    
+                ]},
+                */    
+            ]
+        }
+        L.control.layers.tree(baseTree,overlaysTree).addTo(map);
+
+    
+
+
+
+   
+	</script>
+	</body> 
+</html>
