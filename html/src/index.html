@@ -1,0 +1,1145 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>CENIGA-MINAE Visor Geoespacial Leaflet Demo</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet-src.js" crossorigin=""></script>
+    <!-- Archivos de Control de Capas -->
+    <link rel="stylesheet" href="LayerControl/css/styledLayerControl.css" />
+    <script src="LayerControl/src/styledLayerControl.js"></script>
+
+
+    <script type="text/javascript" src="ajax/dist/leaflet.ajax.js"></script>
+    <script src="ajax/dist/spin.js"></script>
+    <script src="ajax/dist/leaflet.spin.js"></script>
+
+
+
+    <!-- Archivos de Draw de puntos, lineas, poligonos-->
+    <script src="src/Leaflet.draw.js"></script>
+    <script src="src/Leaflet.Draw.Event.js"></script>
+    <link rel="stylesheet" href="src/leaflet.draw.css"/>
+
+    <script src="src/Toolbar.js"></script>
+    <script src="src/Tooltip.js"></script>
+
+    <script src="src/ext/GeometryUtil.js"></script>
+    <script src="src/ext/LatLngUtil.js"></script>
+    <script src="src/ext/LineUtil.Intersect.js"></script>
+    <script src="src/ext/Polygon.Intersect.js"></script>
+    <script src="src/ext/Polyline.Intersect.js"></script>
+    <script src="src/ext/TouchEvents.js"></script>
+
+    <script src="src/draw/DrawToolbar.js"></script>
+    <script src="src/draw/handler/Draw.Feature.js"></script>
+    <script src="src/draw/handler/Draw.SimpleShape.js"></script>
+    <script src="src/draw/handler/Draw.Polyline.js"></script>
+    <script src="src/draw/handler/Draw.Marker.js"></script>
+    <script src="src/draw/handler/Draw.Circle.js"></script>
+    <script src="src/draw/handler/Draw.CircleMarker.js"></script>
+    <script src="src/draw/handler/Draw.Polygon.js"></script>
+    <script src="src/draw/handler/Draw.Rectangle.js"></script>
+
+
+    <script src="src/edit/EditToolbar.js"></script>
+    <script src="src/edit/handler/EditToolbar.Edit.js"></script>
+    <script src="src/edit/handler/EditToolbar.Delete.js"></script>
+
+    <script src="src/Control.Draw.js"></script>
+
+    <script src="src/edit/handler/Edit.Poly.js"></script>
+    <script src="src/edit/handler/Edit.SimpleShape.js"></script>
+    <script src="src/edit/handler/Edit.Rectangle.js"></script>
+    <script src="src/edit/handler/Edit.Marker.js"></script>
+    <script src="src/edit/handler/Edit.CircleMarker.js"></script>
+    <script src="src/edit/handler/Edit.Circle.js"></script>
+
+    <script
+    src="https://code.jquery.com/jquery-3.4.1.min.js"
+    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+    crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/leaflet-wfst@2.0.1-beta.25/dist/leaflet-wfst.src.min.js"></script>
+
+    <style type="text/css">
+        html { 
+            width: 100%;
+            height: 100%; 
+            margin: 0; 
+            padding: 0;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        #map { 
+            width: 100%; 
+            height: 100%; 
+        }
+
+        .icon {
+            max-width: 70%;
+            max-height: 70%;
+            margin: 4px;
+        }
+
+        .navbar {
+
+        }
+
+        .meta-bar {
+            background-color: #ccc;
+            margin: 0;
+
+        }
+
+        .logos {
+            display: flex;
+            background-color: #2b6e99;
+        }
+
+        .logo-box {
+            padding: 5px;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+        }
+
+        .logo {
+            width: 10%;
+            align-self: center;
+        }
+
+        .meta-bar {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .metadatos-link {
+            text-decoration: none;
+            color: black;
+        }
+
+        .metadatos-link h2 {
+            margin: 0;
+            padding: 5px;
+        }
+
+        div.legend {
+            line-height: 18px;
+            color: #555;
+            background-color: white;
+            padding: 5px;
+            opacity: 0.8;
+        }
+
+        div.legend h3 {
+            margin: 0;
+        }
+
+        .legend i {
+            width: 18px;
+            height: 18px;
+            float: left;
+            margin-right: 8px;
+            opacity: 0.7;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="navbar">
+        <div class="logos">
+            <div class="logo-box">
+                <img class="logo icon-geo" src="logos/GEOvisorCENIGA2AMB.png" alt="icon"/>
+                <img class="logo icon-minae" src="logos/MINAE-BlancoVF.png" alt="icon"/>
+                <img class="logo icon-ceniga" src="logos/CENIGA_LogoBlanco.png" alt="icon"/>
+            </div>
+        </div>
+        <div class="meta-bar">
+            <div style="align-self: center;">
+                Latitud: <input type="text" name="lat" id="lat"/>
+                Longitud: <input type="text" name="lng" id="lng"/>
+                <input id="button-play" type="button" value="IR"/>
+            </div>
+            <a href="http://3.12.93.52:8080/geonetwork" class="metadatos-link">
+                <h2>Metadatos</h2>
+            </a>
+        </div>
+    
+    
+    </div>
+   
+    <div id="map"></div>
+
+    <!-- Archivos de Control de Capas Viejo
+    <link rel="stylesheet" href="dist/L.Control.Layers.Tree.css" crossorigin=""/>
+    <script src="dist/L.Control.Layers.Tree.js"></script>
+    -->
+    <script type="text/javascript">
+        var center = [9.5, -84];
+
+        // Definiendo las Capas Base de los Mapas
+
+        var osm = L.tileLayer(
+            '//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+            {attribution: '© OpenStreetMap contributors'}
+        );
+
+        var osmBw = L.tileLayer(
+            'http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png',
+            {attribution: '© OpenStreetMap contributors'}
+        );
+
+        var otopomap = L.tileLayer(
+            '//{s}.tile.opentopomap.org/{z}/{x}/{y}.png',
+            {attribution: '© OpenStreetMap contributors. OpenTopoMap.org'}
+        );
+
+        var googleMap = L.tileLayer(
+            'https://mt1.google.com/vt/lyrs=r&x={x}&y={y}&z={z}',
+            {attribution: '© GoogleMaps contributors'}
+        );
+
+        var googleMapSatellite = L.tileLayer(
+            'https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',
+            {attribution: '© GoogleMaps contributors'}
+        );
+
+        var googleMapHybrid = L.tileLayer(
+            'https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}',
+            {attribution: '© GoogleMaps contributors'}
+        );
+
+
+
+
+        var thunderAttr = {attribution: '© OpenStreetMap contributors. Tiles courtesy of Andy Allan'}
+        var transport = L.tileLayer(
+            '//{s}.tile.thunderforest.com/transport/{z}/{x}/{y}.png',
+            thunderAttr
+        );
+
+        var cycle = L.tileLayer(
+            '//{s}.tile.thunderforest.com/cycle/{z}/{x}/{y}.png',
+            thunderAttr
+        );
+
+        // The tree containing the layers
+        /* Capas Base de Control Layer Viejo */
+
+        // The map
+        var map = L.map('map', {
+            layers: [osm],
+            center: center,
+            zoom: 8
+        });
+
+
+        /****************************
+          SECCION DE WMS SNIT
+        ****************************/
+
+        var limite_cantonal_1_5_mil = L.layerGroup();
+        L.tileLayer.wms('http://geos.snitcr.go.cr/be/IGN_5/wms?', {
+            layers: 'limitecantonal_5k',
+            format: 'image/png',
+            transparent: true
+        }).addTo(limite_cantonal_1_5_mil);
+
+        var limite_distrital_1_5_mil = L.layerGroup();
+        L.tileLayer.wms('http://geos.snitcr.go.cr/be/IGN_5/wms?', {
+            layers: 'limitedistrital_5k',
+            format: 'image/png',
+            transparent: true
+        }).addTo(limite_distrital_1_5_mil);
+
+        var limite_provincial_1_5_mil = L.layerGroup();
+        L.tileLayer.wms('http://geos.snitcr.go.cr/be/IGN_5/wms?', {
+            layers: 'limiteprovincial_5k',
+            format: 'image/png',
+            transparent: true
+        }).addTo(limite_provincial_1_5_mil);
+
+        var linea_costa_1_5_mil = L.layerGroup();
+        L.tileLayer.wms('http://geos.snitcr.go.cr/be/IGN_5/wms?', {
+            layers: 'linea_costa_5000',
+            format: 'image/png',
+            transparent: true
+        }).addTo(linea_costa_1_5_mil);
+
+        var urbano_1_5_mil = L.layerGroup();
+        L.tileLayer.wms('http://geos.snitcr.go.cr/be/IGN_5/wms?', {
+            layers: 'urbano_5000',
+            format: 'image/png',
+            transparent: true
+        }).addTo(urbano_1_5_mil);
+
+        var vias_1_5_mil = L.layerGroup();
+        L.tileLayer.wms('http://geos.snitcr.go.cr/be/IGN_5/wms?', {
+            layers: 'vias_5000',
+            format: 'image/png',
+            transparent: true
+        }).addTo(vias_1_5_mil);
+
+        // Fin de capas SNIT
+
+
+        // Capas de SINAC /
+
+
+        var uso_urbano_05 = L.layerGroup();
+        L.tileLayer.wms('http://18.218.14.134:8080/geoserver/CENIGA/wms?', {
+            layers: 'uso_urbano_05',
+            format: 'image/png',
+            transparent: true
+        }).addTo(uso_urbano_05);
+
+        var unidades_fitogeograficas_14 = L.layerGroup();
+        L.tileLayer.wms('http://18.218.14.134:8080/geoserver/CENIGA/wms?', {
+            layers: 'unidades_fitogeograficas_14',
+            format: 'image/png',
+            transparent: true
+        }).addTo(unidades_fitogeograficas_14);
+
+        var montañas_costa_rica = L.layerGroup();
+        L.tileLayer.wms('http://18.218.14.134:8080/geoserver/CENIGA/wms?', {
+            layers: 'montañas_costa_rica',
+            format: 'image/png',
+            transparent: true
+        }).addTo(montañas_costa_rica);
+
+        var plantaciones_forestales_05 = L.layerGroup();
+        L.tileLayer.wms('http://18.218.14.134:8080/geoserver/CENIGA/wms?', {
+            layers: 'plantaciones_forestales_05',
+            format: 'image/png',
+            transparent: true
+        }).addTo(plantaciones_forestales_05);
+
+        var plantaciones_forestales_13 = L.layerGroup();
+        L.tileLayer.wms('http://18.218.14.134:8080/geoserver/CENIGA/wms?', {
+            layers: 'plantaciones_forestales_13',
+            format: 'image/png',
+            transparent: true
+        }).addTo(plantaciones_forestales_13);
+
+        var forestal_2005 = L.layerGroup();
+        L.tileLayer.wms('http://18.218.14.134:8080/geoserver/CENIGA/wms?', {
+            layers: 'forestal_2005',
+            format: 'image/png',
+            transparent: true
+        }).addTo(forestal_2005);
+
+        var bosque_deciduo_13 = L.layerGroup();
+        L.tileLayer.wms('http://18.218.14.134:8080/geoserver/CENIGA/wms?', {
+            layers: 'bosque_deciduo_13',
+            format: 'image/png',
+            transparent: true
+        }).addTo(bosque_deciduo_13);
+
+        var bosque_secundario_13 = L.layerGroup();
+        L.tileLayer.wms('http://18.218.14.134:8080/geoserver/CENIGA/wms?', {
+            layers: 'bosque_secundario_13',
+            format: 'image/png',
+            transparent: true
+        }).addTo(bosque_secundario_13);
+
+
+        var no_forestal_13 = L.layerGroup();
+        L.tileLayer.wms('http://18.218.14.134:8080/geoserver/CENIGA/wms?', {
+            layers: 'no_forestal_13',
+            format: 'image/png',
+            transparent: true
+        }).addTo(no_forestal_13);
+
+
+        // Fin de Capas SINAC & 
+        
+        
+        //Capas de Sinac
+
+        var Areas_Silvestres_Protegidas_2020 = L.layerGroup();
+        L.tileLayer.wms('http://geos1pne.sirefor.go.cr/GeoserviciosPNE/wms?', {
+            layers: 'areas_silvestres_protegidas',
+            format: 'image/png',
+            transparent: true
+        }).addTo(Areas_Silvestres_Protegidas_2020);
+
+        var Areas_Conservacion_2020 = L.layerGroup();
+        L.tileLayer.wms('http://geos1pne.sirefor.go.cr/GeoserviciosPNE/wms?', {
+            layers: 'areas_conservacion',
+            format: 'image/png',
+            transparent: true
+        }).addTo(Areas_Conservacion_2020);
+
+        var Registro_Nacional_Humedales_2020 = L.layerGroup();
+        L.tileLayer.wms('http://geos1pne.sirefor.go.cr/GeoserviciosPNE/wms?', {
+            layers: 'registro_nacional_humedales',
+            format: 'image/png',
+            transparent: true
+        }).addTo(Registro_Nacional_Humedales_2020);
+
+        var Bosque_Palmas_2020 = L.layerGroup();
+        L.tileLayer.wms('http://geos1pne.sirefor.go.cr/GeoserviciosPNE/wms?', {
+            layers: 'bosque_palmas',
+            format: 'image/png',
+            transparent: true
+        }).addTo(Bosque_Palmas_2020);
+
+        var Bosque_Decidio_2020 = L.layerGroup();
+        L.tileLayer.wms('http://geos1pne.sirefor.go.cr/GeoserviciosPNE/wms?', {
+            layers: 'bosque_decidio',
+            format: 'image/png',
+            transparent: true
+        }).addTo(Bosque_Decidio_2020);
+
+        var Bosque_Maduro_2020 = L.layerGroup();
+        L.tileLayer.wms('http://geos1pne.sirefor.go.cr/GeoserviciosPNE/wms?', {
+            layers: 'bosque_maduro',
+            format: 'image/png',
+            transparent: true
+        }).addTo(Bosque_Maduro_2020);
+
+        var Bosque_Secundario_2020 = L.layerGroup();
+        L.tileLayer.wms('http://geos1pne.sirefor.go.cr/GeoserviciosPNE/wms?', {
+            layers: 'bosque_secundario',
+            format: 'image/png',
+            transparent: true
+        }).addTo(Bosque_Secundario_2020);
+
+        //Fin de Capas De Sinac
+
+        // Capas Fonafifo
+
+        var AREAS_PROTEGIDAS_2020 = L.layerGroup();
+        L.tileLayer.wms('http://geopsa.fonafifo.com/geoserver/GeoServer/wms?', {
+            layers: 'SVGEO_AREAS_PROTEGIDAS_V',
+            format: 'image/png',
+            transparent: true
+        }).addTo(AREAS_PROTEGIDAS_2020);
+
+        var CORREDORES_BIOLOGICOS_2020 = L.layerGroup();
+        L.tileLayer.wms('http://geopsa.fonafifo.com/geoserver/GeoServer/wms?', {
+            layers: 'SVGEO_CORREDORES_BIOLOGICOS_V',
+            format: 'image/png',
+            transparent: true
+        }).addTo(CORREDORES_BIOLOGICOS_2020);
+
+        var RECURSO_HIDRICO_2020 = L.layerGroup();
+        L.tileLayer.wms('http://geopsa.fonafifo.com/geoserver/GeoServer/wms?', {
+            layers: 'SVGEO_RECURSO_HIDRICO_V',
+            format: 'image/png',
+            transparent: true
+        }).addTo(RECURSO_HIDRICO_2020);
+
+        var TERRITORIOS_INDIGENAS_2020 = L.layerGroup();
+        L.tileLayer.wms('http://geopsa.fonafifo.com/geoserver/GeoServer/wms?', {
+            layers: 'SVGEO_TERRITORIOS_INDIGENAS_V',
+            format: 'image/png',
+            transparent: true
+        }).addTo(TERRITORIOS_INDIGENAS_2020);
+
+        var VACIOS_CONSERVACION_2020 = L.layerGroup();
+        L.tileLayer.wms('http://geopsa.fonafifo.com/geoserver/GeoServer/wms?', {
+            layers: 'SVGEO_VACIOS_CONSERVACION_V',
+            format: 'image/png',
+            transparent: true
+        }).addTo(VACIOS_CONSERVACION_2020);
+
+        var INDICE_DESARROLLO_2020 = L.layerGroup();
+        L.tileLayer.wms('http://geopsa.fonafifo.com/geoserver/GeoServer/wms?', {
+            layers: 'SVGEO_INDICE_DESARROLLO_V',
+            format: 'image/png',
+            transparent: true
+        }).addTo(INDICE_DESARROLLO_2020);
+
+        var CENTROIDES_CONTRATOS_2020 = L.layerGroup();
+        L.tileLayer.wms('http://geopsa.fonafifo.com/geoserver/GeoServer/wms?', {
+            layers: 'SVGEO_CENTROIDES_CONTRATOS_V',
+            format: 'image/png',
+            transparent: true
+        }).addTo(CENTROIDES_CONTRATOS_2020);
+
+        var CENTROIDES_FINCAS_2020 = L.layerGroup();
+        L.tileLayer.wms('http://geopsa.fonafifo.com/geoserver/GeoServer/wms?', {
+            layers: 'SVGEO_CENTROIDES_FINCAS_V',
+            format: 'image/png',
+            transparent: true
+        }).addTo(CENTROIDES_FINCAS_2020);
+
+        var POLIGONOS_FINCAS_2020 = L.layerGroup();
+        L.tileLayer.wms('http://geopsa.fonafifo.com/geoserver/GeoServer/wms?', {
+            layers: 'SVGEO_POLIGONOS_FINCAS_V',
+            format: 'image/png',
+            transparent: true
+        }).addTo(POLIGONOS_FINCAS_2020);
+
+        
+
+
+        //Fin de Capas De Fonafifo
+     
+
+        //Capas de CENIGA
+
+        var uso_urbano_05 = L.layerGroup();
+        L.tileLayer.wms('http://18.218.14.134:8080/geoserver/CENIGA/wms?', {
+            layers: 'uso_urbano_05',
+            format: 'image/png',
+            transparent: true
+        }).addTo(uso_urbano_05);
+
+        var unidades_fitogeograficas_14 = L.layerGroup();
+        L.tileLayer.wms('http://18.218.14.134:8080/geoserver/CENIGA/wms?', {
+            layers: 'unidades_fitogeograficas_14',
+            format: 'image/png',
+            transparent: true
+        }).addTo(unidades_fitogeograficas_14);
+
+        var montañas_costa_rica = L.layerGroup();
+        L.tileLayer.wms('http://18.218.14.134:8080/geoserver/CENIGA/wms?', {
+            layers: 'montañas_costa_rica',
+            format: 'image/png',
+            transparent: true
+        }).addTo(montañas_costa_rica);
+
+        var plantaciones_forestales_05 = L.layerGroup();
+        L.tileLayer.wms('http://18.218.14.134:8080/geoserver/CENIGA/wms?', {
+            layers: 'plantaciones_forestales_05',
+            format: 'image/png',
+            transparent: true
+        }).addTo(plantaciones_forestales_05);
+
+        var plantaciones_forestales_13 = L.layerGroup();
+        L.tileLayer.wms('http://18.218.14.134:8080/geoserver/CENIGA/wms?', {
+            layers: 'plantaciones_forestales_13',
+            format: 'image/png',
+            transparent: true
+        }).addTo(plantaciones_forestales_13);
+
+        var forestal_2005 = L.layerGroup();
+        L.tileLayer.wms('http://18.218.14.134:8080/geoserver/CENIGA/wms?', {
+            layers: 'forestal_2005',
+            format: 'image/png',
+            transparent: true
+        }).addTo(forestal_2005);
+
+        var bosque_deciduo_13 = L.layerGroup();
+        L.tileLayer.wms('http://18.218.14.134:8080/geoserver/CENIGA/wms?', {
+            layers: 'bosque_deciduo_13',
+            format: 'image/png',
+            transparent: true
+        }).addTo(bosque_deciduo_13);
+
+        var bosque_secundario_13 = L.layerGroup();
+        L.tileLayer.wms('http://18.218.14.134:8080/geoserver/CENIGA/wms?', {
+            layers: 'bosque_secundario_13',
+            format: 'image/png',
+            transparent: true
+        }).addTo(bosque_secundario_13);
+
+
+        var no_forestal_13 = L.layerGroup();
+        L.tileLayer.wms('http://18.218.14.134:8080/geoserver/CENIGA/wms?', {
+            layers: 'no_forestal_13',
+            format: 'image/png',
+            transparent: true
+        }).addTo(no_forestal_13);
+
+
+
+        // Capas de IMN
+
+        var Evapotranspiracion_Media_Anual_Costa_Rica_2004 = L.layerGroup();
+        L.tileLayer.wms('http://18.218.14.134:8080/geoserver/IMN/wms?', {
+            layers: 'Evapotranspiración_Media_Anual_Costa_Rica_2004',
+            format: 'image/png',
+            transparent: true
+        }).addTo(Evapotranspiracion_Media_Anual_Costa_Rica_2004);
+
+        var Tem_max_CR_60_13 = L.layerGroup();
+        L.tileLayer.wms('http://18.218.14.134:8080/geoserver/IMN/wms?', {
+            layers: 'Tem_max_CR_60_13',
+            format: 'image/png',
+            transparent: true
+        }).addTo(Tem_max_CR_60_13);
+
+        var Tem_media_CR_60_13 = L.layerGroup();
+        L.tileLayer.wms('http://18.218.14.134:8080/geoserver/IMN/wms?', {
+            layers: 'Tem_media_CR_60_13',
+            format: 'image/png',
+            transparent: true
+        }).addTo(Tem_media_CR_60_13);
+
+        var Tem_min_CR_60_13 = L.layerGroup();
+        L.tileLayer.wms('http://18.218.14.134:8080/geoserver/IMN/wms?', {
+            layers: 'Tem_min_CR_60_13',
+            format: 'image/png',
+            transparent: true
+        }).addTo(Tem_min_CR_60_13);
+
+        var Temperatura_Maxima_Costa_Rica_2004 = L.layerGroup();
+        L.tileLayer.wms('http://18.218.14.134:8080/geoserver/IMN/wms?', {
+            layers: 'Temperatura_Maxima_Costa_Rica_2004',
+            format: 'image/png',
+            transparent: true
+        }).addTo(Temperatura_Maxima_Costa_Rica_2004);
+
+        var Temperatura_Minima_Costa_Rica_2004 = L.layerGroup();
+        L.tileLayer.wms('http://18.218.14.134:8080/geoserver/IMN/wms?', {
+            layers: 'Temperatura_Minima_Costa_Rica_2004',
+            format: 'image/png',
+            transparent: true
+        }).addTo(Temperatura_Minima_Costa_Rica_2004);
+
+        var Temperatura_media_Costa_Rica_2004 = L.layerGroup();
+        L.tileLayer.wms('http://18.218.14.134:8080/geoserver/IMN/wms?', {
+            layers: 'Temperatura_media_Costa_Rica_2004',
+            format: 'image/png',
+            transparent: true
+        }).addTo(Temperatura_media_Costa_Rica_2004);
+
+        var abril_pre_2004 = L.layerGroup();
+        L.tileLayer.wms('http://18.218.14.134:8080/geoserver/IMN/wms?', {
+            layers: 'abril_pre_2004',
+            format: 'image/png',
+            transparent: true
+        }).addTo(abril_pre_2004);
+
+        var abril_pre_60_13 = L.layerGroup();
+        L.tileLayer.wms('http://18.218.14.134:8080/geoserver/IMN/wms?', {
+            layers: 'abril_pre_60_13',
+            format: 'image/png',
+            transparent: true
+        }).addTo(abril_pre_60_13);
+
+        var agos_pre_2004 = L.layerGroup();
+        L.tileLayer.wms('http://18.218.14.134:8080/geoserver/IMN/wms?', {
+            layers: 'agos_pre_2004',
+            format: 'image/png',
+            transparent: true
+        }).addTo(agos_pre_2004);
+
+        var agosto_pre_60_13 = L.layerGroup();
+        L.tileLayer.wms('http://18.218.14.134:8080/geoserver/IMN/wms?', {
+            layers: 'agosto_pre_60_13',
+            format: 'image/png',
+            transparent: true
+        }).addTo(agosto_pre_60_13);
+
+        var anual_pre_2004 = L.layerGroup();
+        L.tileLayer.wms('http://18.218.14.134:8080/geoserver/IMN/wms?', {
+            layers: 'anual_pre_2004',
+            format: 'image/png',
+            transparent: true
+        }).addTo(anual_pre_2004);
+
+        var anual_pre_60_13 = L.layerGroup();
+        L.tileLayer.wms('http://18.218.14.134:8080/geoserver/IMN/wms?', {
+            layers: 'anual_pre_60_13',
+            format: 'image/png',
+            transparent: true
+        }).addTo(anual_pre_60_13);
+
+        var brillo_solar_anual_2004 = L.layerGroup();
+        L.tileLayer.wms('http://18.218.14.134:8080/geoserver/IMN/wms?', {
+            layers: 'brillo_solar_anual_2004',
+            format: 'image/png',
+            transparent: true
+        }).addTo(brillo_solar_anual_2004);
+
+        var brillo_solar_junio_2004 = L.layerGroup();
+        L.tileLayer.wms('http://18.218.14.134:8080/geoserver/IMN/wms?', {
+            layers: 'brillo_solar_junio_2004',
+            format: 'image/png',
+            transparent: true
+        }).addTo(brillo_solar_junio_2004);
+
+        var brillo_solar_marzo_2004 = L.layerGroup();
+        L.tileLayer.wms('http://18.218.14.134:8080/geoserver/IMN/wms?', {
+            layers: 'brillo_solar_marzo_2004',
+            format: 'image/png',
+            transparent: true
+        }).addTo(brillo_solar_marzo_2004);
+
+        var dic_pre_2004 = L.layerGroup();
+        L.tileLayer.wms('http://18.218.14.134:8080/geoserver/IMN/wms?', {
+            layers: 'dic_pre_2004',
+            format: 'image/png',
+            transparent: true
+        }).addTo(dic_pre_2004);
+
+        var diciembre_pre_60_13 = L.layerGroup();
+        L.tileLayer.wms('http://18.218.14.134:8080/geoserver/IMN/wms?', {
+            layers: 'diciembre_pre_60_13',
+            format: 'image/png',
+            transparent: true
+        }).addTo(diciembre_pre_60_13);
+
+        var enero_pre_2004 = L.layerGroup();
+        L.tileLayer.wms('http://18.218.14.134:8080/geoserver/IMN/wms?', {
+            layers: 'enero_pre_2004',
+            format: 'image/png',
+            transparent: true
+        }).addTo(enero_pre_2004);
+
+        var enero_pre_60_13 = L.layerGroup();
+        L.tileLayer.wms('http://18.218.14.134:8080/geoserver/IMN/wms?', {
+            layers: 'enero_pre_60_13',
+            format: 'image/png',
+            transparent: true
+        }).addTo(enero_pre_60_13);
+
+        var feb_pre_2004 = L.layerGroup();
+        L.tileLayer.wms('http://18.218.14.134:8080/geoserver/IMN/wms?', {
+            layers: 'feb_pre_2004',
+            format: 'image/png',
+            transparent: true
+        }).addTo(feb_pre_2004);
+
+        var febrero_pre_60_13 = L.layerGroup();
+        L.tileLayer.wms('http://18.218.14.134:8080/geoserver/IMN/wms?', {
+            layers: 'febrero_pre_60_13',
+            format: 'image/png',
+            transparent: true
+        }).addTo(febrero_pre_60_13);
+
+        var jul_pre_2004 = L.layerGroup();
+        L.tileLayer.wms('http://18.218.14.134:8080/geoserver/IMN/wms?', {
+            layers: 'jul_pre_2004',
+            format: 'image/png',
+            transparent: true
+        }).addTo(jul_pre_2004);
+
+        var julio_pre_60_13 = L.layerGroup();
+        L.tileLayer.wms('http://18.218.14.134:8080/geoserver/IMN/wms?', {
+            layers: 'julio_pre_60_13',
+            format: 'image/png',
+            transparent: true
+        }).addTo(julio_pre_60_13);
+
+        var jun_pre_2004 = L.layerGroup();
+        L.tileLayer.wms('http://18.218.14.134:8080/geoserver/IMN/wms?', {
+            layers: 'jun_pre_2004',
+            format: 'image/png',
+            transparent: true
+        }).addTo(jun_pre_2004);
+
+        var junio_pre_60_13 = L.layerGroup();
+        L.tileLayer.wms('http://18.218.14.134:8080/geoserver/IMN/wms?', {
+            layers: 'junio_pre_60_13',
+            format: 'image/png',
+            transparent: true
+        }).addTo(junio_pre_60_13);
+
+        var mar_pre_2004 = L.layerGroup();
+        L.tileLayer.wms('http://18.218.14.134:8080/geoserver/IMN/wms?', {
+            layers: 'mar_pre_2004',
+            format: 'image/png',
+            transparent: true
+        }).addTo(mar_pre_2004);
+
+        var marzo_pre_60_13 = L.layerGroup();
+        L.tileLayer.wms('http://18.218.14.134:8080/geoserver/IMN/wms?', {
+            layers: 'marzo_pre_60_13',
+            format: 'image/png',
+            transparent: true
+        }).addTo(marzo_pre_60_13);
+
+        var mayo_pre_2004 = L.layerGroup();
+        L.tileLayer.wms('http://18.218.14.134:8080/geoserver/IMN/wms?', {
+            layers: 'mayo_pre_2004',
+            format: 'image/png',
+            transparent: true
+        }).addTo(mayo_pre_2004);
+
+        var mayo_pre_60_13 = L.layerGroup();
+        L.tileLayer.wms('http://18.218.14.134:8080/geoserver/IMN/wms?', {
+            layers: 'mayo_pre_2004',
+            format: 'image/png',
+            transparent: true
+        }).addTo(mayo_pre_60_13);
+
+        var nov_pre_2004 = L.layerGroup();
+        L.tileLayer.wms('http://18.218.14.134:8080/geoserver/IMN/wms?', {
+            layers: 'nov_pre_2004',
+            format: 'image/png',
+            transparent: true
+        }).addTo(nov_pre_2004);
+
+        var noviembre_pre_60_13 = L.layerGroup();
+        L.tileLayer.wms('http://18.218.14.134:8080/geoserver/IMN/wms?', {
+            layers: 'noviembre_pre_60_13',
+            format: 'image/png',
+            transparent: true
+        }).addTo(noviembre_pre_60_13);
+
+        var oct_pre_2004 = L.layerGroup();
+        L.tileLayer.wms('http://18.218.14.134:8080/geoserver/IMN/wms?', {
+            layers: 'oct_pre_2004',
+            format: 'image/png',
+            transparent: true
+        }).addTo(oct_pre_2004);
+
+        var octubre_pre_60_13 = L.layerGroup();
+        L.tileLayer.wms('http://18.218.14.134:8080/geoserver/IMN/wms?', {
+            layers: 'octubre_pre_60_13',
+            format: 'image/png',
+            transparent: true
+        }).addTo(octubre_pre_60_13);
+
+        var reg_climaticas_imn = L.layerGroup();
+        L.tileLayer.wms('http://18.218.14.134:8080/geoserver/IMN/wms?', {
+            layers: 'reg_climaticas_imn',
+            format: 'image/png',
+            transparent: true
+        }).addTo(reg_climaticas_imn);
+
+        var sep_pre_2004 = L.layerGroup();
+        L.tileLayer.wms('http://18.218.14.134:8080/geoserver/IMN/wms?', {
+            layers: 'sep_pre_2004',
+            format: 'image/png',
+            transparent: true
+        }).addTo(sep_pre_2004);
+
+
+        var setiembre_pre_60_13 = L.layerGroup();
+        L.tileLayer.wms('http://18.218.14.134:8080/geoserver/IMN/wms?', {
+            layers: 'setiembre_pre_60_13',
+            format: 'image/png',
+            transparent: true
+        }).addTo(setiembre_pre_60_13);
+
+        // Fin de capas IMN
+
+        // Control Styled Nuevo
+
+        //Capas vectoriales de GeoServer CENIGA convertidas a GeoJSON
+
+
+        function popUp(f,l){
+            var out = [];
+            if (f.properties){
+                for(key in f.properties){
+                    out.push(key+": "+f.properties[key]);
+                }
+                l.bindPopup(out.join("<br />"));
+            }
+        }
+
+        
+        //Fonafifo Vector
+        var CentroidesContratos = new L.GeoJSON.AJAX("geojson/Centroide_contratos.geojson",{onEachFeature:popUp , 
+            pointToLayer: function (feature, latlng) {
+                return L.circleMarker(latlng, {
+                    radius: 4,
+                    fillColor: "#ff7800",
+                    color: "#000",
+                    weight: 1,
+                    opacity: 1,
+                    fillOpacity: 0.8
+                });
+            }
+        });
+
+        //Fonafifo Vector
+        var CentroidesFincas = new L.GeoJSON.AJAX("geojson/Centroides_fincas2.geojson",{onEachFeature:popUp , 
+            pointToLayer: function (feature, latlng) {
+                return L.circleMarker(latlng, {
+                    radius: 4,
+                    fillColor: "#8A33FF",
+                    color: "#000",
+                    weight: 1,
+                    opacity: 1,
+                    fillOpacity: 0.8
+                });
+            }
+        });
+
+        //Capas ambientales
+        var asp2019 = new L.GeoJSON.AJAX("geojson/asp2019.geojson",{onEachFeature:popUp});
+        var agricultura05 = new L.GeoJSON.AJAX("geojson/agricultura_2005.geojson",{onEachFeature:popUp});
+        var inventarionacionalhumedales = new L.GeoJSON.AJAX("geojson/inventario_nac_humedales.geojson",{onEachFeature:popUp});
+        var camaronerassalineras = new L.GeoJSON.AJAX("geojson/camaroneras.geojson",{onEachFeature:popUp});
+        var areasdeconservacion18 = new L.GeoJSON.AJAX("geojson/areas_conservacion_18.geojson",{onEachFeature:popUp});
+        var ecorregiones2011 = new L.GeoJSON.AJAX("geojson/ecoregiones2011.geojson",{onEachFeature:popUp });
+        /*
+
+        var agua05 = L.layerGroup();
+       
+        var areasquemadas05 = L.layerGroup();
+
+        var cafe2005 = L.layerGroup();
+        var calidadaguauseg = L.layerGroup();
+        var calidadaire = L.layerGroup();
+        var camaronerassalineras = L.layerGroup();
+        var corredoresbiologicos = L.layerGroup();
+        var cuencashidrograficas = L.layerGroup();
+
+        var bosquepalma2005 = L.layerGroup();
+        var bosquepalma2013 = L.layerGroup();
+        var bosquesecundario2005 = L.layerGroup();
+        var deforestacion2005 = L.layerGroup();
+        
+        var guiafotosterra = L.layerGroup();
+
+        var guiahojasterra = L.layerGroup();
+        
+
+        var manglar2005 = L.layerGroup();
+        var modeloambientaluseg = L.layerGroup();
+        var corredoresbiologicosdecostarica2020 = L.layerGroup();
+
+        */
+
+
+        /*
+        var jsonTest = new L.GeoJSON.AJAX("colleges.geojson",{onEachFeature:popUp});
+        var jsonTest2 = new L.GeoJSON.AJAX("counties.geojson",{onEachFeature:popUp});
+        */
+        
+
+        var baseMaps = [
+            { 
+                groupName : "Mapas Base",
+                expanded : false,
+                layers    : {
+                    "OpenStreetMaps" : osm,
+                    "OpenStreeMap <b>B&W</b>": osmBw,
+                    "OpenTopoMap": otopomap,
+                    "Satellite" :  googleMapSatellite,
+                    "Road Map"  :  googleMap,
+                    "Terreno"   :  googleMapHybrid
+                }
+            }, 
+                            							
+			];
+            
+            var overlays = [
+                {
+                    groupName : "SNIT",
+                    expanded : false,
+                    layers    : { 
+                        "limite_cantonal_1_5_mil" : limite_cantonal_1_5_mil,
+                        "limite_distrital_1_5_mil" 	 : limite_distrital_1_5_mil,
+                        "limite_provincial_1_5_mil" : limite_provincial_1_5_mil,
+                        "linea_costa_1_5_mil" 	 : linea_costa_1_5_mil,
+                        "urbano_1_5_mil" : urbano_1_5_mil,
+                        "vias_1_5_mil" 	 : vias_1_5_mil,
+                            
+                    }	
+                }, {
+                    groupName : "SINAC",
+                    expanded : false,
+                    layers    : { 
+                        "Areas_Silvestres_Protegidas_2020"     : Areas_Silvestres_Protegidas_2020,
+                        "Areas_Conservacion_2020" 	 : Areas_Conservacion_2020,
+                        "Registro_Nacional_Humedales_2020"	 : Registro_Nacional_Humedales_2020,
+                        'Bosque_Palmas_2020': Bosque_Palmas_2020,
+                        'Bosque_Decidio_2020': Bosque_Decidio_2020,
+                        'Bosque_Maduro_2020': Bosque_Maduro_2020,
+                        'Bosque_Secundario_2020': Bosque_Secundario_2020,	
+                        
+                        
+                    }	
+                }, {
+
+                               
+
+                    groupName : "FONAFIFO",
+                    expanded : false,
+                    layers    : { 
+                        "AREAS_PROTEGIDAS_2020"	: AREAS_PROTEGIDAS_2020, 
+                        "CORREDORES_BIOLOGICOS_2020" : CORREDORES_BIOLOGICOS_2020,
+                        "RECURSO_HIDRICO_2020"	: RECURSO_HIDRICO_2020, 
+                        "VACIOS_CONSERVACION_2020" : VACIOS_CONSERVACION_2020,
+                        "INDICE_DESARROLLO_2020"	: INDICE_DESARROLLO_2020, 
+                        //"CENTROIDES_CONTRATOS_2020" : CENTROIDES_CONTRATOS_2020,
+                        //"CENTROIDES_FINCAS_2020"    : CENTROIDES_FINCAS_2020, 
+                        "CENTROIDES_CONTRATOS_2020" : CentroidesContratos, 
+                        "CENTROIDES_FINCAS_2020"	: CentroidesFincas, 
+                        "POLIGONOS_FINCAS_2020" : POLIGONOS_FINCAS_2020,
+                    }      		
+                }, {
+                    
+                    groupName: "Biodiversidad y Ecosistemas",
+                    expanded: false,
+                    layers: {
+                        "Areas Silvestres Protegidas": asp2019,
+                        //"Corredores biológicos 2020": corredoresbiologicosdecostarica2020,
+                        "Inventario nacional de humedales": inventarionacionalhumedales,
+                        "Camaroneras salineras": camaronerassalineras,
+                        "Areas de conservacion": areasdeconservacion18,
+                        "Ecorregiones 2011": ecorregiones2011,
+                        "Montañas Costa Rica": montañas_costa_rica,
+                        "Unidades Fitogeograficas 2014": unidades_fitogeograficas_14,
+                    }
+                }, {
+                    groupName: "Cobertura y uso del suelo",
+                    expanded: false,
+                    layers: {
+                        //"Areas quemadas 2005": areasquemadas05,
+                        "Forestal 2005": forestal_2005,
+                        //"Cafe 2005": cafe2005,
+                        //"Manglar 2005": manglar2005,
+                        "Uso Urbano 2005": uso_urbano_05,
+                        "Plantaciones Forestales 2005": plantaciones_forestales_05,
+                        //"Bosque secundario 2005": bosquesecundario2005,
+                        //"Bosque de palma 2005": bosquepalma2005,
+                        //"Deforestacion 2005": deforestacion2005,
+                        "Agricultura 2005": agricultura05,
+                        //"Aguas 2005": agua05,
+                        "Bosque deciduo 2013": bosque_deciduo_13,
+                        "Bosque secundario 2013": bosque_secundario_13,
+                        "No forestal 2013": no_forestal_13,
+                        //"Bosque de palma 2013": bosquepalma2013,
+                        "Plantaciones Forestales 2013": plantaciones_forestales_13,
+                    }
+                                                                
+                },{
+                
+                    groupName : "IMN Clima",
+                    expanded : false,
+                    layers    : { 
+                        "abril_pre_2004": abril_pre_2004,
+                        "Evapotranspiracion_Anual_Costa_Rica_2004": Evapotranspiracion_Media_Anual_Costa_Rica_2004,
+                        "Tem_max_CR_60_13": Tem_max_CR_60_13,
+                        "Tem_media_CR_60_13": Tem_media_CR_60_13,
+                        "Tem_min_CR_60_13": Tem_min_CR_60_13,
+                        "Temperatura_Maxima_Costa_Rica_2004": Temperatura_Maxima_Costa_Rica_2004,
+                        "Temperatura_Minima_Costa_Rica_2004": Temperatura_Minima_Costa_Rica_2004,
+                        "Temperatura_media_Costa_Rica_2004": Temperatura_media_Costa_Rica_2004,
+                        "abril_pre_60_13": abril_pre_60_13,
+                        "agos_pre_2004": agos_pre_2004,
+                        "agosto_pre_60_13": agosto_pre_60_13,
+                        "anual_pre_2004": anual_pre_2004,
+                        "anual_pre_60_13": anual_pre_60_13,
+                        "brillo_solar_anual_2004": brillo_solar_anual_2004,
+                        "brillo_solar_junio_2004": brillo_solar_junio_2004,
+                        "brillo_solar_marzo_2004": brillo_solar_marzo_2004,
+                        "dic_pre_2004": dic_pre_2004,
+                        "diciembre_pre_60_13": diciembre_pre_60_13,
+                        "enero_pre_2004": enero_pre_2004,
+                        "enero_pre_60_13": enero_pre_60_13,
+                        "feb_pre_2004": feb_pre_2004,
+                        "febrero_pre_60_13": febrero_pre_60_13,
+                        "jul_pre_2004": jul_pre_2004,
+                        "junio_pre_60_13": junio_pre_60_13,
+                        "mar_pre_2004": mar_pre_2004,
+                        "marzo_pre_60_13": marzo_pre_60_13,
+                        "nov_pre_2004": nov_pre_2004,
+                        "mayo_pre_2004": mayo_pre_2004,
+                        "noviembre_pre_60_13": noviembre_pre_60_13,
+                        "oct_pre_2004": oct_pre_2004,
+                        "octubre_pre_60_13": octubre_pre_60_13,
+                        "reg_climaticas_imn": reg_climaticas_imn,
+                        "sep_pre_2004": sep_pre_2004,
+                        "setiembre_pre_60_13": setiembre_pre_60_13,
+                                
+                    }
+
+                }
+
+
+			];
+            
+            /*
+			
+			*/
+			var options = {
+				container_width 	: "300px",
+				group_maxHeight     : "180px",
+				//container_maxHeight : "350px", 
+				exclusive       	: false,
+				collapsed : true, 
+				position: 'topright'
+			};
+		
+		    var control = L.Control.styledLayerControl(baseMaps, overlays, options);
+			map.addControl(control);
+			
+			// test for adding new base layers dynamically
+			// to create a new group simply add a layer with new group name
+
+            /*
+            	
+			var popup = L.popup()
+			.setLatLng(center)
+			.setContent("The data that appears in this application are fictitious and do not represent actual data!")
+			.openOn(map);
+
+            */
+
+
+
+
+
+
+
+
+
+        //boton RUN button-play
+
+        var button  = document.getElementById("button-play");
+        button.addEventListener('click', run)
+        //console.log("Se hizo click en button play");
+
+        function run(){
+            var zoom = 12;
+            var lat = document.getElementById("lat").value;
+            var lng = document.getElementById("lng").value;
+
+            var marker = L.marker([lat, lng],{}).addTo(map);
+            map.flyTo([lat, lng], zoom);
+        }
+
+        
+        
+        var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+            osmAttrib = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+            osm = L.tileLayer(osmUrl, { maxZoom: 18, attribution: osmAttrib }),
+            
+            //map = new L.Map('map', { center: new L.LatLng(51.505, -0.04), zoom: 13 }),
+            
+            drawnItems = L.featureGroup().addTo(map);
+            L.control.layers({
+            // 'osm': osm.addTo(map),
+            //"google": L.tileLayer('http://www.google.cn/maps/vt?lyrs=s@189&gl=cn&x={x}&y={y}&z={z}', {
+            // attribution: 'google'
+            //})
+           }, { 'drawlayer': drawnItems }, { position: 'topleft', collapsed: false }).addTo(map);
+        
+        map.addControl(new L.Control.Draw({
+        edit: {
+            featureGroup: drawnItems,
+            poly: {
+                allowIntersection: false
+            }
+        },
+        draw: {
+            polygon: {
+                allowIntersection: false,
+                showArea: true
+            }
+        }
+    }));
+
+    map.on(L.Draw.Event.CREATED, function (event) {
+        var layer = event.layer;
+
+        drawnItems.addLayer(layer);
+    });
+        
+
+    </script>
+</body>
+</html>

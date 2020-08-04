@@ -5,5 +5,5 @@ services:
     ports:
       - "80:80"
     volumes:
-      - "~/docker/visor-minae-docker/html:/usr/share/nginx/html"
+      - "${PWD}/html:/usr/share/nginx/html"
     image: visor-minae
