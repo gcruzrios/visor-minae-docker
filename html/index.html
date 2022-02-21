@@ -186,7 +186,7 @@
     <script src="dist/L.Control.Layers.Tree.js"></script>
     -->
     <script type="text/javascript">
-        var center = [9.5, -84];
+        var center = [9.3, -84];
 
         // Definiendo las Capas Base de los Mapas
 
@@ -254,47 +254,47 @@
         ****************************/
 
        
-        // var limite_cantonal_1_5_mil = L.layerGroup();
-        // L.tileLayer.wms('http://geos.snitcr.go.cr/be/IGN_5/wms?', {
-        //     layers: 'limitecantonal_5k',
-        //     format: 'image/png',
-        //     transparent: true
-        // }).addTo(limite_cantonal_1_5_mil);
+        var limite_cantonal_1_5_mil = L.layerGroup();
+        L.tileLayer.wms('http://geos.snitcr.go.cr/be/IGN_5/wms?', {
+            layers: 'limitecantonal_5k',
+            format: 'image/png',
+            transparent: true
+        }).addTo(limite_cantonal_1_5_mil);
 
-        // var limite_distrital_1_5_mil = L.layerGroup();
-        // L.tileLayer.wms('http://geos.snitcr.go.cr/be/IGN_5/wms?', {
-        //     layers: 'limitedistrital_5k',
-        //     format: 'image/png',
-        //     transparent: true
-        // }).addTo(limite_distrital_1_5_mil);
+        var limite_distrital_1_5_mil = L.layerGroup();
+        L.tileLayer.wms('http://geos.snitcr.go.cr/be/IGN_5/wms?', {
+            layers: 'limitedistrital_5k',
+            format: 'image/png',
+            transparent: true
+        }).addTo(limite_distrital_1_5_mil);
 
-        // var limite_provincial_1_5_mil = L.layerGroup();
-        // L.tileLayer.wms('http://geos.snitcr.go.cr/be/IGN_5/wms?', {
-        //     layers: 'limiteprovincial_5k',
-        //     format: 'image/png',
-        //     transparent: true
-        // }).addTo(limite_provincial_1_5_mil);
+        var limite_provincial_1_5_mil = L.layerGroup();
+        L.tileLayer.wms('http://geos.snitcr.go.cr/be/IGN_5/wms?', {
+            layers: 'limiteprovincial_5k',
+            format: 'image/png',
+            transparent: true
+        }).addTo(limite_provincial_1_5_mil);
 
-        // var linea_costa_1_5_mil = L.layerGroup();
-        // L.tileLayer.wms('http://geos.snitcr.go.cr/be/IGN_5/wms?', {
-        //     layers: 'linea_costa_5000',
-        //     format: 'image/png',
-        //     transparent: true
-        // }).addTo(linea_costa_1_5_mil);
+        var linea_costa_1_5_mil = L.layerGroup();
+        L.tileLayer.wms('http://geos.snitcr.go.cr/be/IGN_5/wms?', {
+            layers: 'linea_costa_5000',
+            format: 'image/png',
+            transparent: true
+        }).addTo(linea_costa_1_5_mil);
 
-        // var urbano_1_5_mil = L.layerGroup();
-        // L.tileLayer.wms('http://geos.snitcr.go.cr/be/IGN_5/wms?', {
-        //     layers: 'urbano_5000',
-        //     format: 'image/png',
-        //     transparent: true
-        // }).addTo(urbano_1_5_mil);
+        var urbano_1_5_mil = L.layerGroup();
+        L.tileLayer.wms('http://geos.snitcr.go.cr/be/IGN_5/wms?', {
+            layers: 'urbano_5000',
+            format: 'image/png',
+            transparent: true
+        }).addTo(urbano_1_5_mil);
 
-        // var vias_1_5_mil = L.layerGroup();
-        // L.tileLayer.wms('http://geos.snitcr.go.cr/be/IGN_5/wms?', {
-        //     layers: 'vias_5000',
-        //     format: 'image/png',
-        //     transparent: true
-        // }).addTo(vias_1_5_mil);
+        var vias_1_5_mil = L.layerGroup();
+        L.tileLayer.wms('http://geos.snitcr.go.cr/be/IGN_5/wms?', {
+            layers: 'vias_5000',
+            format: 'image/png',
+            transparent: true
+        }).addTo(vias_1_5_mil);
         
 
         var baseMaps = [
@@ -315,6 +315,23 @@
             
 
             var overlays = [];
+
+            var overlays = [
+                {
+                    groupName : "SNIT",
+                    expanded : false,
+                    layers    : { 
+                        "limite_cantonal_1_5_mil" : limite_cantonal_1_5_mil,
+                        "limite_distrital_1_5_mil" 	 : limite_distrital_1_5_mil,
+                        "limite_provincial_1_5_mil" : limite_provincial_1_5_mil,
+                        "linea_costa_1_5_mil" 	 : linea_costa_1_5_mil,
+                        "urbano_1_5_mil" : urbano_1_5_mil,
+                        "vias_1_5_mil" 	 : vias_1_5_mil,
+                            
+                    }	
+                },
+            ];
+
 
             
             // var overlays = [
