@@ -253,49 +253,49 @@
           SECCION DE WMS SNIT
         ****************************/
 
-        /*
-        var limite_cantonal_1_5_mil = L.layerGroup();
-        L.tileLayer.wms('http://geos.snitcr.go.cr/be/IGN_5/wms?', {
-            layers: 'limitecantonal_5k',
-            format: 'image/png',
-            transparent: true
-        }).addTo(limite_cantonal_1_5_mil);
+       
+        // var limite_cantonal_1_5_mil = L.layerGroup();
+        // L.tileLayer.wms('http://geos.snitcr.go.cr/be/IGN_5/wms?', {
+        //     layers: 'limitecantonal_5k',
+        //     format: 'image/png',
+        //     transparent: true
+        // }).addTo(limite_cantonal_1_5_mil);
 
-        var limite_distrital_1_5_mil = L.layerGroup();
-        L.tileLayer.wms('http://geos.snitcr.go.cr/be/IGN_5/wms?', {
-            layers: 'limitedistrital_5k',
-            format: 'image/png',
-            transparent: true
-        }).addTo(limite_distrital_1_5_mil);
+        // var limite_distrital_1_5_mil = L.layerGroup();
+        // L.tileLayer.wms('http://geos.snitcr.go.cr/be/IGN_5/wms?', {
+        //     layers: 'limitedistrital_5k',
+        //     format: 'image/png',
+        //     transparent: true
+        // }).addTo(limite_distrital_1_5_mil);
 
-        var limite_provincial_1_5_mil = L.layerGroup();
-        L.tileLayer.wms('http://geos.snitcr.go.cr/be/IGN_5/wms?', {
-            layers: 'limiteprovincial_5k',
-            format: 'image/png',
-            transparent: true
-        }).addTo(limite_provincial_1_5_mil);
+        // var limite_provincial_1_5_mil = L.layerGroup();
+        // L.tileLayer.wms('http://geos.snitcr.go.cr/be/IGN_5/wms?', {
+        //     layers: 'limiteprovincial_5k',
+        //     format: 'image/png',
+        //     transparent: true
+        // }).addTo(limite_provincial_1_5_mil);
 
-        var linea_costa_1_5_mil = L.layerGroup();
-        L.tileLayer.wms('http://geos.snitcr.go.cr/be/IGN_5/wms?', {
-            layers: 'linea_costa_5000',
-            format: 'image/png',
-            transparent: true
-        }).addTo(linea_costa_1_5_mil);
+        // var linea_costa_1_5_mil = L.layerGroup();
+        // L.tileLayer.wms('http://geos.snitcr.go.cr/be/IGN_5/wms?', {
+        //     layers: 'linea_costa_5000',
+        //     format: 'image/png',
+        //     transparent: true
+        // }).addTo(linea_costa_1_5_mil);
 
-        var urbano_1_5_mil = L.layerGroup();
-        L.tileLayer.wms('http://geos.snitcr.go.cr/be/IGN_5/wms?', {
-            layers: 'urbano_5000',
-            format: 'image/png',
-            transparent: true
-        }).addTo(urbano_1_5_mil);
+        // var urbano_1_5_mil = L.layerGroup();
+        // L.tileLayer.wms('http://geos.snitcr.go.cr/be/IGN_5/wms?', {
+        //     layers: 'urbano_5000',
+        //     format: 'image/png',
+        //     transparent: true
+        // }).addTo(urbano_1_5_mil);
 
-        var vias_1_5_mil = L.layerGroup();
-        L.tileLayer.wms('http://geos.snitcr.go.cr/be/IGN_5/wms?', {
-            layers: 'vias_5000',
-            format: 'image/png',
-            transparent: true
-        }).addTo(vias_1_5_mil);
-        */
+        // var vias_1_5_mil = L.layerGroup();
+        // L.tileLayer.wms('http://geos.snitcr.go.cr/be/IGN_5/wms?', {
+        //     layers: 'vias_5000',
+        //     format: 'image/png',
+        //     transparent: true
+        // }).addTo(vias_1_5_mil);
+        
 
         var baseMaps = [
             { 
@@ -303,7 +303,7 @@
                 expanded : true,
                 layers    : {
                     "OpenStreetMaps" : osm,
-                    "OpenStreeMap <b>B&W</b>": osmBw,
+                    
                     "OpenTopoMap": otopomap,
                     "Satellite" :  googleMapSatellite,
                     "Road Map"  :  googleMap,
@@ -316,135 +316,135 @@
 
             var overlays = [];
 
-            /*
-            var overlays = [
-                {
-                    groupName : "SNIT",
-                    expanded : false,
-                    layers    : { 
-                        "limite_cantonal_1_5_mil" : limite_cantonal_1_5_mil,
-                        "limite_distrital_1_5_mil" 	 : limite_distrital_1_5_mil,
-                        "limite_provincial_1_5_mil" : limite_provincial_1_5_mil,
-                        "linea_costa_1_5_mil" 	 : linea_costa_1_5_mil,
-                        "urbano_1_5_mil" : urbano_1_5_mil,
-                        "vias_1_5_mil" 	 : vias_1_5_mil,
+            
+            // var overlays = [
+            //     {
+            //         groupName : "SNIT",
+            //         expanded : false,
+            //         layers    : { 
+            //             "limite_cantonal_1_5_mil" : limite_cantonal_1_5_mil,
+            //             "limite_distrital_1_5_mil" 	 : limite_distrital_1_5_mil,
+            //             "limite_provincial_1_5_mil" : limite_provincial_1_5_mil,
+            //             "linea_costa_1_5_mil" 	 : linea_costa_1_5_mil,
+            //             "urbano_1_5_mil" : urbano_1_5_mil,
+            //             "vias_1_5_mil" 	 : vias_1_5_mil,
                             
-                    }	
-                }, {
-                    groupName : "SINAC",
-                    expanded : false,
-                    layers    : { 
-                        "Areas_Silvestres_Protegidas_2020"     : Areas_Silvestres_Protegidas_2020,
-                        "Areas_Conservacion_2020" 	 : Areas_Conservacion_2020,
-                        "Registro_Nacional_Humedales_2020"	 : Registro_Nacional_Humedales_2020,
-                        'Bosque_Palmas_2020': Bosque_Palmas_2020,
-                        'Bosque_Decidio_2020': Bosque_Decidio_2020,
-                        'Bosque_Maduro_2020': Bosque_Maduro_2020,
-                        'Bosque_Secundario_2020': Bosque_Secundario_2020,	
+            //         }	
+            //     }, {
+            //         groupName : "SINAC",
+            //         expanded : false,
+            //         layers    : { 
+            //             "Areas_Silvestres_Protegidas_2020"     : Areas_Silvestres_Protegidas_2020,
+            //             "Areas_Conservacion_2020" 	 : Areas_Conservacion_2020,
+            //             "Registro_Nacional_Humedales_2020"	 : Registro_Nacional_Humedales_2020,
+            //             'Bosque_Palmas_2020': Bosque_Palmas_2020,
+            //             'Bosque_Decidio_2020': Bosque_Decidio_2020,
+            //             'Bosque_Maduro_2020': Bosque_Maduro_2020,
+            //             'Bosque_Secundario_2020': Bosque_Secundario_2020,	
                         
                         
-                    }	
-                }, {
+            //         }	
+            //     }, {
 
                                
 
-                    groupName : "FONAFIFO",
-                    expanded : false,
-                    layers    : { 
-                        "AREAS_PROTEGIDAS_2020"	: AREAS_PROTEGIDAS_2020, 
-                        "CORREDORES_BIOLOGICOS_2020" : CORREDORES_BIOLOGICOS_2020,
-                        "RECURSO_HIDRICO_2020"	: RECURSO_HIDRICO_2020, 
-                        "VACIOS_CONSERVACION_2020" : VACIOS_CONSERVACION_2020,
-                        "INDICE_DESARROLLO_2020"	: INDICE_DESARROLLO_2020, 
-                        //"CENTROIDES_CONTRATOS_2020" : CENTROIDES_CONTRATOS_2020,
-                        //"CENTROIDES_FINCAS_2020"    : CENTROIDES_FINCAS_2020, 
-                        "CENTROIDES_CONTRATOS_2020" : CentroidesContratos, 
-                        "CENTROIDES_FINCAS_2020"	: CentroidesFincas, 
-                        "POLIGONOS_FINCAS_2020" : POLIGONOS_FINCAS_2020,
-                    }      		
-                }, {
+            //         groupName : "FONAFIFO",
+            //         expanded : false,
+            //         layers    : { 
+            //             "AREAS_PROTEGIDAS_2020"	: AREAS_PROTEGIDAS_2020, 
+            //             "CORREDORES_BIOLOGICOS_2020" : CORREDORES_BIOLOGICOS_2020,
+            //             "RECURSO_HIDRICO_2020"	: RECURSO_HIDRICO_2020, 
+            //             "VACIOS_CONSERVACION_2020" : VACIOS_CONSERVACION_2020,
+            //             "INDICE_DESARROLLO_2020"	: INDICE_DESARROLLO_2020, 
+            //             //"CENTROIDES_CONTRATOS_2020" : CENTROIDES_CONTRATOS_2020,
+            //             //"CENTROIDES_FINCAS_2020"    : CENTROIDES_FINCAS_2020, 
+            //             "CENTROIDES_CONTRATOS_2020" : CentroidesContratos, 
+            //             "CENTROIDES_FINCAS_2020"	: CentroidesFincas, 
+            //             "POLIGONOS_FINCAS_2020" : POLIGONOS_FINCAS_2020,
+            //         }      		
+            //     }, {
                     
-                    groupName: "Biodiversidad y Ecosistemas",
-                    expanded: false,
-                    layers: {
-                        "Areas Silvestres Protegidas": asp2019,
-                        //"Corredores biológicos 2020": corredoresbiologicosdecostarica2020,
-                        "Inventario nacional de humedales": inventarionacionalhumedales,
-                        "Camaroneras salineras": camaronerassalineras,
-                        "Areas de conservacion": areasdeconservacion18,
-                        "Ecorregiones 2011": ecorregiones2011,
-                        "Montañas Costa Rica": montañas_costa_rica,
-                        "Unidades Fitogeograficas 2014": unidades_fitogeograficas_14,
-                    }
-                }, {
-                    groupName: "Cobertura y uso del suelo",
-                    expanded: false,
-                    layers: {
-                        //"Areas quemadas 2005": areasquemadas05,
-                        "Forestal 2005": forestal_2005,
-                        //"Cafe 2005": cafe2005,
-                        //"Manglar 2005": manglar2005,
-                        "Uso Urbano 2005": uso_urbano_05,
-                        "Plantaciones Forestales 2005": plantaciones_forestales_05,
-                        //"Bosque secundario 2005": bosquesecundario2005,
-                        //"Bosque de palma 2005": bosquepalma2005,
-                        //"Deforestacion 2005": deforestacion2005,
-                        "Agricultura 2005": agricultura05,
-                        //"Aguas 2005": agua05,
-                        "Bosque deciduo 2013": bosque_deciduo_13,
-                        "Bosque secundario 2013": bosque_secundario_13,
-                        "No forestal 2013": no_forestal_13,
-                        //"Bosque de palma 2013": bosquepalma2013,
-                        "Plantaciones Forestales 2013": plantaciones_forestales_13,
-                    }
+            //         groupName: "Biodiversidad y Ecosistemas",
+            //         expanded: false,
+            //         layers: {
+            //             "Areas Silvestres Protegidas": asp2019,
+            //             //"Corredores biológicos 2020": corredoresbiologicosdecostarica2020,
+            //             "Inventario nacional de humedales": inventarionacionalhumedales,
+            //             "Camaroneras salineras": camaronerassalineras,
+            //             "Areas de conservacion": areasdeconservacion18,
+            //             "Ecorregiones 2011": ecorregiones2011,
+            //             "Montañas Costa Rica": montañas_costa_rica,
+            //             "Unidades Fitogeograficas 2014": unidades_fitogeograficas_14,
+            //         }
+            //     }, {
+            //         groupName: "Cobertura y uso del suelo",
+            //         expanded: false,
+            //         layers: {
+            //             //"Areas quemadas 2005": areasquemadas05,
+            //             "Forestal 2005": forestal_2005,
+            //             //"Cafe 2005": cafe2005,
+            //             //"Manglar 2005": manglar2005,
+            //             "Uso Urbano 2005": uso_urbano_05,
+            //             "Plantaciones Forestales 2005": plantaciones_forestales_05,
+            //             //"Bosque secundario 2005": bosquesecundario2005,
+            //             //"Bosque de palma 2005": bosquepalma2005,
+            //             //"Deforestacion 2005": deforestacion2005,
+            //             "Agricultura 2005": agricultura05,
+            //             //"Aguas 2005": agua05,
+            //             "Bosque deciduo 2013": bosque_deciduo_13,
+            //             "Bosque secundario 2013": bosque_secundario_13,
+            //             "No forestal 2013": no_forestal_13,
+            //             //"Bosque de palma 2013": bosquepalma2013,
+            //             "Plantaciones Forestales 2013": plantaciones_forestales_13,
+            //         }
                                                                 
-                },{
+            //     },{
                 
-                    groupName : "IMN Clima",
-                    expanded : false,
-                    layers    : { 
-                        "abril_pre_2004": abril_pre_2004,
-                        "Evapotranspiracion_Anual_Costa_Rica_2004": Evapotranspiracion_Media_Anual_Costa_Rica_2004,
-                        "Tem_max_CR_60_13": Tem_max_CR_60_13,
-                        "Tem_media_CR_60_13": Tem_media_CR_60_13,
-                        "Tem_min_CR_60_13": Tem_min_CR_60_13,
-                        "Temperatura_Maxima_Costa_Rica_2004": Temperatura_Maxima_Costa_Rica_2004,
-                        "Temperatura_Minima_Costa_Rica_2004": Temperatura_Minima_Costa_Rica_2004,
-                        "Temperatura_media_Costa_Rica_2004": Temperatura_media_Costa_Rica_2004,
-                        "abril_pre_60_13": abril_pre_60_13,
-                        "agos_pre_2004": agos_pre_2004,
-                        "agosto_pre_60_13": agosto_pre_60_13,
-                        "anual_pre_2004": anual_pre_2004,
-                        "anual_pre_60_13": anual_pre_60_13,
-                        "brillo_solar_anual_2004": brillo_solar_anual_2004,
-                        "brillo_solar_junio_2004": brillo_solar_junio_2004,
-                        "brillo_solar_marzo_2004": brillo_solar_marzo_2004,
-                        "dic_pre_2004": dic_pre_2004,
-                        "diciembre_pre_60_13": diciembre_pre_60_13,
-                        "enero_pre_2004": enero_pre_2004,
-                        "enero_pre_60_13": enero_pre_60_13,
-                        "feb_pre_2004": feb_pre_2004,
-                        "febrero_pre_60_13": febrero_pre_60_13,
-                        "jul_pre_2004": jul_pre_2004,
-                        "junio_pre_60_13": junio_pre_60_13,
-                        "mar_pre_2004": mar_pre_2004,
-                        "marzo_pre_60_13": marzo_pre_60_13,
-                        "nov_pre_2004": nov_pre_2004,
-                        "mayo_pre_2004": mayo_pre_2004,
-                        "noviembre_pre_60_13": noviembre_pre_60_13,
-                        "oct_pre_2004": oct_pre_2004,
-                        "octubre_pre_60_13": octubre_pre_60_13,
-                        "reg_climaticas_imn": reg_climaticas_imn,
-                        "sep_pre_2004": sep_pre_2004,
-                        "setiembre_pre_60_13": setiembre_pre_60_13,
+            //         groupName : "IMN Clima",
+            //         expanded : false,
+            //         layers    : { 
+            //             "abril_pre_2004": abril_pre_2004,
+            //             "Evapotranspiracion_Anual_Costa_Rica_2004": Evapotranspiracion_Media_Anual_Costa_Rica_2004,
+            //             "Tem_max_CR_60_13": Tem_max_CR_60_13,
+            //             "Tem_media_CR_60_13": Tem_media_CR_60_13,
+            //             "Tem_min_CR_60_13": Tem_min_CR_60_13,
+            //             "Temperatura_Maxima_Costa_Rica_2004": Temperatura_Maxima_Costa_Rica_2004,
+            //             "Temperatura_Minima_Costa_Rica_2004": Temperatura_Minima_Costa_Rica_2004,
+            //             "Temperatura_media_Costa_Rica_2004": Temperatura_media_Costa_Rica_2004,
+            //             "abril_pre_60_13": abril_pre_60_13,
+            //             "agos_pre_2004": agos_pre_2004,
+            //             "agosto_pre_60_13": agosto_pre_60_13,
+            //             "anual_pre_2004": anual_pre_2004,
+            //             "anual_pre_60_13": anual_pre_60_13,
+            //             "brillo_solar_anual_2004": brillo_solar_anual_2004,
+            //             "brillo_solar_junio_2004": brillo_solar_junio_2004,
+            //             "brillo_solar_marzo_2004": brillo_solar_marzo_2004,
+            //             "dic_pre_2004": dic_pre_2004,
+            //             "diciembre_pre_60_13": diciembre_pre_60_13,
+            //             "enero_pre_2004": enero_pre_2004,
+            //             "enero_pre_60_13": enero_pre_60_13,
+            //             "feb_pre_2004": feb_pre_2004,
+            //             "febrero_pre_60_13": febrero_pre_60_13,
+            //             "jul_pre_2004": jul_pre_2004,
+            //             "junio_pre_60_13": junio_pre_60_13,
+            //             "mar_pre_2004": mar_pre_2004,
+            //             "marzo_pre_60_13": marzo_pre_60_13,
+            //             "nov_pre_2004": nov_pre_2004,
+            //             "mayo_pre_2004": mayo_pre_2004,
+            //             "noviembre_pre_60_13": noviembre_pre_60_13,
+            //             "oct_pre_2004": oct_pre_2004,
+            //             "octubre_pre_60_13": octubre_pre_60_13,
+            //             "reg_climaticas_imn": reg_climaticas_imn,
+            //             "sep_pre_2004": sep_pre_2004,
+            //             "setiembre_pre_60_13": setiembre_pre_60_13,
                                 
-                    }
+            //         }
 
-                }
+            //     }
 
 
-			];
-            */
+			// ];
+            
 
             /*
 			
